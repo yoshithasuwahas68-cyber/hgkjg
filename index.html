@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGBOPURA MAHA VIDYALAYA</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+<style>
+.hero{
+    animation: fadeHero 1s ease-in;
+}
+
+@keyframes fadeHero{
+    from{opacity:0; transform:scale(1.1);}
+    to{opacity:1; transform:scale(1);}
+}
+.navbar a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+    padding:8px 12px;
+    position:relative;
+    transition:0.3s ease;
+    border-radius:6px;
+}
+
+.navbar a:hover{
+    color:#ffc107;
+    background:rgba(255,255,255,0.1);
+    transform:translateY(-2px);
+}
+
+.navbar a::after{
+    display:none;
+}
+
+.navbar a:active{
+    transform:scale(0.95);
+}
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f4f4f4;
+    scroll-behavior:smooth;
+}
+
+/* NAV */
+.navbar{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:#b71c1c;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    padding:15px;
+    z-index:999;
+    background-color: #5759CC;
+    background-image: linear-gradient(to bottom, #1C00B8, #2994FF)
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* HERO */
+.hero{
+    height:100vh;
+    background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+    url("school.jpg");
+    background-size:cover;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    text-align:center;
+    background-image: linear-gradient(to bottom, #8f0500, #D85741)
+}
+
+/* BADGE */
+.badge{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    border:4px solid gold;
+    margin-bottom:10px;
+}
+
+/* SECTIONS */
+section{
+    padding:80px 10%;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+    margin-bottom:20px;
+}
+
+/* PRINCIPAL */
+.principal{
+    display:flex;
+    gap:20px;
+    align-items:center;
+}
+
+.principal img{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    border:3px solid #b71c1c;
+}
+
+/* INPUT */
+input{
+    width:100%;
+    padding:5px;
+    border:2px solid #b71c1c;
+    border-radius:8px;
+}
+
+/* STUDENT RESULT */
+.student{
+    background:#fff8e1;
+    padding:10px;
+    margin:10px 0;
+    border-left:5px solid #ffc107;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<div class="navbar">
+    <a href="#home">Home</a>
+    <a href="#principal">Principal</a>
+    <a href="#students">Students</a>
+    <a href="#contact">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <img src="badge.jpeg" class="badge">
+    <h1>AGBOPURA MAHA VIDYALAYA</h1>
+    <H2>KANTHALE</H2>
+    <p>Knowledge • Discipline • Excellence</p>
+</section>
+
+<!-- PRINCIPAL MESSAGE -->
+<section id="principal">
+    <div class="card principal">
+        <img src="principal.jpeg">
+        <div>
+            <h2>Principal Message</h2>
+            <p>
+                Welcome to Agbopura Maha Vidyalaya.
+                We aim to build disciplined and educated future leaders.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- STUDENT SEARCH -->
+<section id="students">
+    <div class="card">
+        <h2>Student Search</h2>
+        <input type="text" id="searchInput" placeholder="Search Student Name...">
+        <div id="result"></div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+    <div class="card">
+        <h2>Contact</h2>
+        <p>📞 071-0000000</p>
+        <p>📧 school@gmail.com</p>
+    </div>
+</section>
+
+<script>
+let students = [];
+
+Papa.parse("students.csv", {
+    download: true,
+    header: true,
+    complete: function(res){
+        students = res.data;
+    }
+});
+
+document.getElementById("searchInput").addEventListener("keyup", function(){
+
+    let val = this.value.toLowerCase();
+
+    let filtered = students.filter(s =>
+        (s.full_name && s.full_name.toLowerCase().includes(val)) ||
+        (s.name_initials && s.name_initials.toLowerCase().includes(val))
+    );
+
+    let output = "";
+
+    filtered.forEach(s => {
+        output += `
+        <div class="student">
+            <b>ID:</b> ${s.id}<br>
+            <b>Name:</b> ${s.full_name}<br>
+            <b>Initials:</b> ${s.name_initials}<br>
+            <b>Grade:</b> ${s.grade}<br>
+            <b>Class:</b> ${s.class}<br>
+        </div>
+        `;
+    });
+
+    document.getElementById("result").innerHTML = output;
+});
+let students = [];
+
+Papa.parse("students.csv", {
+    download: true,
+    header: true,
+    complete: function(res){
+        students = res.data;
+    }
+});
+
+document.getElementById("searchInput").addEventListener("keyup", function(){
+
+    let value = this.value.toLowerCase();
+
+    let filtered = students.filter(s =>
+        s.name.toLowerCase().includes(value)
+    );
+
+    let output = "";
+
+    filtered.forEach(s => {
+        output += `
+        <div class="student">
+            <b>ID:</b> ${s.id}<br>
+            <b>Name:</b> ${s.name}<br>
+            <b>Grade:</b> ${s.grade}<br>
+            <b>Class:</b> ${s.class}
+        </div>
+        `;
+    });
+
+    document.getElementById("result").innerHTML = output;
+});
+</script>
+
+</body>
+</html>
